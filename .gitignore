@@ -1,0 +1,8 @@
+# Large or re-downloadable geodata: rebuild with the scripts in scripts/
+*.tif
+*.gpkg
+*.zip
+
+# Raw downloads and working copies
+downloads/
+data_raw/

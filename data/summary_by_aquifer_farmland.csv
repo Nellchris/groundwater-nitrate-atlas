@@ -1,0 +1,5 @@
+aquifer_category,farmland_class,n_wells,median_nitrate,q1,q3,pct_above_11.3
+Chalk,high,75,9.6,7.5,11.88,29.3
+Chalk,low,40,6.1,1.4,8.81,2.5
+Clay / low-permeability,high,19,0.1,0.1,1.75,0.0
+Clay / low-permeability,low,52,0.1,0.1,0.62,0.0

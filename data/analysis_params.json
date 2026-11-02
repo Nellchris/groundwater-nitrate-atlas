@@ -1,0 +1,13 @@
+{
+  "farmland_definition": "WorldCover cropland (40) + grassland (30)",
+  "farmland_threshold_pct": 75.0,
+  "farmland_threshold_rationale": "median % farmland within 1 km across all wells (75.2%), rounded",
+  "farmland_radius_m": 1000,
+  "farmland_median_pct_1km": 75.2,
+  "statistical_categories": [
+    "Chalk",
+    "Clay / low-permeability"
+  ],
+  "excluded_from_stats": "Greensand (n=14) and minor categories",
+  "drinking_water_limit_mg_L_as_N": 11.3
+}
