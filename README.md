@@ -16,7 +16,7 @@ Within the chalk, surrounding land use matters. Wells with high farmland coverag
 Groundwater nitrate measurements were collected from the Environment Agency's Water Quality Archive for 215 monitoring wells, covering samples from late 2021 to late 2026. Each well was reduced to a single median value from its most recent five years of data. Wells were classified by the rock type at their location using the British Geological Survey's Hydrogeology 625k map, grouping them into chalk (highly permeable) and clay/low-permeability categories. Two additional layers were overlaid: Source Protection Zones, which are regulatory boundaries drawn around drinking-water abstraction points, and farmland coverage derived from ESA WorldCover 2021 satellite imagery, combining cropland and grassland within a one-kilometre radius of each well.
 
 ## Data Sources
-Environment Agency Water Quality Archive — nitrate measurements, Open Government Licence
-British Geological Survey Hydrogeology 625k — aquifer classification, Open Government Licence, © UKRI
-Environment Agency Source Protection Zones — regulatory boundaries, Open Government Licence
+Environment Agency Water Quality Archive — nitrate measurements, Open Government Licence.
+British Geological Survey Hydrogeology 625k — aquifer classification, Open Government Licence, © UKRI.
+Environment Agency Source Protection Zones — regulatory boundaries, Open Government Licence.
 ESA WorldCover 2021 — satellite land cover at 10-metre resolution, Creative Commons Attribution 4.0
