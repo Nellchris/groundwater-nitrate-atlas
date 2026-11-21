@@ -9,5 +9,6 @@
     "Clay / low-permeability"
   ],
   "excluded_from_stats": "Greensand (n=14) and minor categories",
-  "drinking_water_limit_mg_L_as_N": 11.3
+  "drinking_water_limit_mg_L_as_NO3": 50.0,
+  "drinking_water_limit_source": "Water Supply (Water Quality) Regulations 2016, Schedule 1, Table B"
 }

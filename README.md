@@ -16,31 +16,32 @@ grassland one click away.
 
 ## Headline result
 
-| Aquifer | wells | median NO₃-N | IQR | % above 11.3 |
+| Aquifer | wells | median NO₃ | IQR | % above 50 |
 |---|---|---|---|---|
-| **Chalk** | 115 | **8.55** | 6.20 – 11.00 | **20.0%** |
-| **Clay / low-permeability** | 71 | **0.10** | 0.10 – 1.12 | 0.0% |
-| Greensand *(map only)* | 14 | 5.60 | 3.04 – 7.59 | 0.0% |
-| Jurassic/other limestone | 9 | 0.57 | 0.10 – 3.10 | 0.0% |
-| Other sandstone/superficial | 3 | 4.39 | 3.15 – 5.40 | 0.0% |
-| Other | 3 | 3.10 | 3.00 – 4.80 | 0.0% |
+| **Chalk** | 115 | **37.9** | 27.4 – 48.7 | **20.0%** |
+| **Clay / low-permeability** | 71 | **0.4** | 0.4 – 4.95 | 0.0% |
+| Greensand *(map only)* | 14 | 24.75 | 13.48 – 33.57 | 0.0% |
+| Jurassic/other limestone | 9 | 2.5 | 0.4 – 13.7 | 0.0% |
+| Other sandstone/superficial | 3 | 19.5 | 13.95 – 23.9 | 0.0% |
+| Other | 3 | 13.7 | 13.25 – 21.25 | 0.0% |
 
-An ~85× difference in median between Chalk and Clay. One in five Chalk wells
-sits above the drinking-water limit; no Clay well does. A Clay median of 0.10
+An ~95× difference in median between Chalk and Clay. One in five Chalk wells
+(23 of 115) sits above the drinking-water limit; no Clay well does. A Clay
+median of 0.4
 is the substituted half-detection-limit value — the typical Clay well is simply
 **non-detect**, consistent with reducing conditions and low-permeability cover
 rather than with low nitrate loading at surface.
 
 ### Nitrate by aquifer × SPZ
 
-| Aquifer | in SPZ | wells | median | IQR | % above 11.3 |
+| Aquifer | in SPZ | wells | median | IQR | % above 50 |
 |---|---|---|---|---|---|
-| Chalk | outside | 60 | 8.43 | 6.18 – 10.75 | 20.0% |
-| Chalk | **inside** | 55 | 8.80 | 6.25 – 11.00 | 20.0% |
-| Clay | outside | 57 | 0.10 | 0.10 – 0.83 | 0.0% |
-| Clay | **inside** | 14 | 0.10 | 0.10 – 4.10 | 0.0% |
+| Chalk | outside | 60 | 37.3 | 27.3 – 47.58 | 20.0% |
+| Chalk | **inside** | 55 | 39.0 | 27.65 – 48.7 | 20.0% |
+| Clay | outside | 57 | 0.4 | 0.4 – 3.7 | 0.0% |
+| Clay | **inside** | 14 | 0.4 | 0.4 – 18.17 | 0.0% |
 
-**SPZ status makes essentially no difference** (Chalk 8.80 inside vs 8.43
+**SPZ status makes essentially no difference** (Chalk 39.0 inside vs 37.3
 outside). This should not be read as SPZs failing. They are drawn by
 groundwater travel time to a public abstraction point, not by nitrate risk, and
 they constrain new activities rather than historic nitrate already in transit
@@ -50,22 +51,22 @@ through the unsaturated chalk. A null result here is the expected result.
 
 High farmland = **≥75% cropland + grassland within 1 km** (see threshold note).
 
-| Aquifer | farmland | wells | median | IQR | % above 11.3 |
+| Aquifer | farmland | wells | median | IQR | % above 50 |
 |---|---|---|---|---|---|
-| Chalk | **high** | 75 | **9.60** | 7.50 – 11.88 | **29.3%** |
-| Chalk | low | 40 | 6.10 | 1.40 – 8.81 | 2.5% |
-| Clay | high | 19 | 0.10 | 0.10 – 1.75 | 0.0% |
-| Clay | low | 52 | 0.10 | 0.10 – 0.62 | 0.0% |
+| Chalk | **high** | 75 | **42.5** | 33.2 – 52.55 | **29.3%** |
+| Chalk | low | 40 | 27.0 | 6.22 – 39.02 | 2.5% |
+| Clay | high | 19 | 0.4 | 0.4 – 7.75 | 0.0% |
+| Clay | low | 52 | 0.4 | 0.4 – 2.72 | 0.0% |
 
 Within the Chalk, surrounding farmland separates the wells far better than SPZ
-status does: median 9.60 vs 6.10, and the share above the limit goes from 2.5%
+status does: median 42.5 vs 27.0, and the share above the limit goes from 2.5%
 to 29.3%. In the Clay the contrast vanishes — whatever is applied at surface,
 it is not reaching these boreholes as nitrate.
 
 **Threshold.** 75% is the median % farmland within 1 km across all 215 wells
 (75.2%, rounded). The study area is overwhelmingly rural, so a round "half the
 land is farmed" cut at 50% is not a contrast at all: it puts 107 of 115 Chalk
-wells on the "high" side and the signal collapses to 8.65 vs 6.65. That
+wells on the "high" side and the signal collapses to 38.3 vs 29.45. That
 variant is kept at `data/summary_by_aquifer_farmland_thresh50.csv`; rerun any
 threshold with `python scripts/06_spatial_analysis.py --threshold 60`.
 
@@ -131,13 +132,19 @@ envelope. Alternatives tested (wells / Chalk / Clay / Greensand):
 
 ## Units
 
-**All nitrate values in every output are mg/L as N (NO₃-N).** Nothing is
-expressed as NO₃.
+**All nitrate values in every output are mg/L as NO₃.** Nothing is expressed
+as NO₃-N.
 
-The drinking-water limit is **50 mg/L as NO₃**, which converts to
-**11.3 mg/L as N** (divide by 4.427, the ratio of the molar mass of NO₃,
-62.00 g/mol, to that of N, 14.01 g/mol). 11.3 is the hinge of the diverging
-colour scale on the map and the threshold behind every `pct_above_11.3` column.
+The drinking-water limit is **50 mg/L as NO₃** (Water Supply (Water Quality)
+Regulations 2016, Schedule 1, Table B). 50 is the hinge of the diverging
+colour scale on the map and the threshold behind every `pct_above_50` column.
+
+The EA reports determinand 0117 as nitrogen. Every value is converted once, in
+`scripts/02_join_aquifer.py`, by **×4.427** — the ratio of the molar mass of
+NO₃ (62.00 g/mol) to that of N (14.01 g/mol) — and rounded to one decimal
+place. This is a change of unit, not of data: no well changes side of the
+limit, and every percentage in the tables above is identical to the as-N
+version of this analysis.
 
 Only **determinand 0117 (Nitrate as N)** is used. There is **no determinand
 0118** in the EA codelist — "Nitrate as NO3" is code **9880**, which was
@@ -228,7 +235,8 @@ than Voyager.
    point-source contamination, not ambient aquifer quality.
 2. **Nitrate.** Determinand 0117, five annual windows covering 2021-11-01 to
    2026-10-31, one median per well. 253 of 1716 results were left-censored
-   (`<0.196 mg/L`) and are substituted at **half the reporting limit (0.098)**;
+   (`<0.196 mg/L as N`) and are substituted at **half the reporting limit
+   (0.098 as N, 0.4 as NO₃)**;
    `n_censored` records how many per well so the choice is auditable.
 3. **Aquifer.** Point-in-polygon against the clipped BGS layer;
    `aquifer_category` derived from `ROCK_UNIT`, falling back to BGS `CLASS`.
@@ -253,9 +261,9 @@ than Voyager.
   are outside this build.
 - **625k is a coarse national map.** Near category boundaries the assignment is
   uncertain at the scale an individual well sits at.
-- **The Clay median is a censoring artefact.** 0.10 mg/L is half the reporting
-  limit. The honest statement is "most Clay wells are non-detect", not "Clay
-  wells average 0.1 mg/L". Rank-based comparisons are safe; means are not.
+- **The Clay median is a censoring artefact.** 0.4 mg/L as NO₃ is half the
+  reporting limit. The honest statement is "most Clay wells are non-detect",
+  not "Clay wells average 0.4 mg/L". Rank comparisons are safe; means are not.
 - **Farmland is contemporaneous, nitrate is not.** WorldCover is a 2021
   snapshot; nitrate arriving at a chalk borehole today may reflect land use of
   decades ago, given unsaturated-zone travel times of ~1 m/yr. The farmland
@@ -289,7 +297,7 @@ than Voyager.
 | `data/spz_clipped.gpkg`, `data/bgs_hydro_clipped.gpkg` | clipped vectors |
 | `data/worldcover_bbox.tif` | clipped 10 m land cover |
 
-`wells_analysis.csv` columns: `well_id, lat, lon, nitrate_median_mg_L_as_N,
+`wells_analysis.csv` columns: `well_id, lat, lon, nitrate_median_mg_L_as_NO3,
 aquifer_category, n_samples, n_censored, name, point_type, bgs_rock_unit,
 bgs_class, bgs_character, first_sample, last_sample, in_spz, spz_zone,
 dist_to_spz_boundary_m, dist_to_nearest_spz_m, pct_cropland_500m,

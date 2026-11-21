@@ -23,14 +23,17 @@ from PIL import Image
 
 LEAFLET_JS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
 LEAFLET_CSS = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-LIMIT = 11.3  # 50 mg/l NO3 expressed as N
+# Drinking-water limit, mg/l as NO3 (Water Supply (Water Quality) Regulations
+# 2016, Schedule 1, Table B).
+LIMIT = 50
 
 # Diverging scale hinged on the drinking-water limit. Labels are spelled out:
 # the panel is written for a general reader.
-BREAKS = [(1, "#313695", "Less than 1"), (3, "#4575b4", "1 &ndash; 3"),
-          (6, "#74add1", "3 &ndash; 6"), (9, "#abd9e9", "6 &ndash; 9"),
-          (LIMIT, "#fee090", "9 &ndash; 11.3"), (15, "#fdae61", "11.3 &ndash; 15"),
-          (20, "#f46d43", "15 &ndash; 20"), (float("inf"), "#a50026", "More than 20")]
+BREAKS = [(4.4, "#313695", "Less than 4.4"), (13.3, "#4575b4", "4.4 &ndash; 13.3"),
+          (26.6, "#74add1", "13.3 &ndash; 26.6"), (39.8, "#abd9e9", "26.6 &ndash; 39.8"),
+          (LIMIT, "#fee090", "39.8 &ndash; 50"), (66.4, "#fdae61", "50 &ndash; 66.4"),
+          (88.5, "#f46d43", "66.4 &ndash; 88.5"),
+          (float("inf"), "#a50026", "More than 88.5")]
 
 AQ_COLOURS = {"Chalk": "#d8cbe8", "Clay / low-permeability": "#c9b79c",
               "Greensand": "#9ecf86", "Jurassic/other limestone": "#a8c5d8",
@@ -131,22 +134,25 @@ explains the colours, and the box at the top of the map switches layers on and
 off.</p>
 
 <h4>Key finding</h4>
-<p>One in five chalk wells exceeds the drinking-water limit. No clay well does.
-Wells surrounded by farmland show higher nitrate than those that are not.</p>
+<p>The median chalk well holds 37.9 milligrams of nitrate per litre; the median
+clay well holds 0.4. One in five chalk wells exceeds the drinking-water limit of
+50. No clay well does. Wells surrounded by farmland show higher nitrate than
+those that are not.</p>
 
 <h4>How the map was made</h4>
 <p>Nitrate results were pulled from the Environment Agency archive for
 groundwater wells in the study area. Each well was assigned to an aquifer type
 using the British Geological Survey bedrock map. Source Protection Zones and
 farmland &ndash; cropland plus grassland from satellite imagery &ndash; were
-overlaid to test whether they relate to nitrate levels.</p>
+overlaid to test whether they relate to nitrate levels. Values are reported
+here as milligrams per litre of nitrate.</p>
 
 <h4>Limitations</h4>
 <ul>
 <li>The aquifer type is based on bedrock at the surface. The actual depth a
 well draws from is not recorded, so some wells near geological boundaries may
 be misclassified.</li>
-<li>The clay median of 0.10 milligrams per litre is at the detection limit:
+<li>The clay median of 0.4 milligrams per litre is at the detection limit:
 most clay wells are simply non-detect rather than low.</li>
 <li>Farmland is a 2021 snapshot. Nitrate reaching a chalk well today may
 reflect land use from decades earlier.</li>
@@ -168,10 +174,10 @@ Attribution 4.0, &copy; ESA.</li>
 
 <h4>Terms used</h4>
 <dl>
-<dt>Nitrate as Nitrogen</dt><dd>The form reported by the Environment Agency,
-in milligrams per litre.</dd>
-<dt>Drinking-water limit</dt><dd>11.3 milligrams per litre as Nitrogen,
-equivalent to 50 milligrams per litre as Nitrate.</dd>
+<dt>Milligrams per litre as Nitrate</dt><dd>The weight of nitrate in a litre of
+water &ndash; the form drinking-water standards are written in.</dd>
+<dt>Drinking-water limit</dt><dd>50 milligrams per litre as Nitrate (Water
+Supply (Water Quality) Regulations 2016, Schedule 1, Table B).</dd>
 <dt>Source Protection Zone</dt><dd>A regulatory zone around a drinking-water
 abstraction point, defined by groundwater travel time.</dd>
 <dt>Chalk</dt><dd>A highly permeable limestone aquifer.</dd>
@@ -219,17 +225,17 @@ def main():
     # Only what the simplified popup needs.
     pts = [{
         "lat": r.lat, "lon": r.lon,
-        "v": r.nitrate_median_mg_L_as_N,
+        "v": r.nitrate_median_mg_L_as_NO3,
         "cat": r.aquifer_category,
         "nm": r.name if isinstance(r.name, str) else str(r.well_id),
-        "c": colour(r.nitrate_median_mg_L_as_N),
+        "c": colour(r.nitrate_median_mg_L_as_NO3),
         "z": r.spz_zone if (bool(r.in_spz) and isinstance(r.spz_zone, str)) else "",
     } for r in w.itertuples()]
 
     leg_n = "".join(
         '<div class="row"><span class="dot" style="background:%s"></span>%s</div>'
         % (c, lab) +
-        ('<div class="limitline"><span>drinking-water limit 11.3</span></div>'
+        ('<div class="limitline"><span>drinking-water limit 50</span></div>'
          if hi == LIMIT else "")
         for hi, c, lab in BREAKS)
     present = list(aq["aquifer_category"])
@@ -368,9 +374,9 @@ def main():
    <p class="lede">Map colours</p>
    <h4>Median nitrate concentration</h4>
    __LEGN__
-   <div class="unit">All values in <b>milligrams per litre as Nitrogen</b>.
-    The drinking-water limit of 11.3 milligrams per litre as Nitrogen is
-    equivalent to 50 milligrams per litre as Nitrate.</div>
+   <div class="unit">All values in <b>milligrams per litre as Nitrate</b>.
+    The drinking-water limit is 50 milligrams per litre as Nitrate
+    (Water Supply (Water Quality) Regulations 2016, Schedule 1, Table B).</div>
    <h4>Aquifer geology</h4>
    __LEGAQ__
   </section>
@@ -417,7 +423,7 @@ const wellLayer=L.layerGroup(PTS.map(p=>L.circleMarker([p.lat,p.lon],{
 }).bindPopup(
  '<div class="pt">'+p.nm+'</div>'+
  '<div class="pv'+(p.v>LIMIT?' over':'')+'">'+p.v+'</div>'+
- '<div class="pu">milligrams per litre as Nitrogen</div>'+
+ '<div class="pu">milligrams per litre as Nitrate</div>'+
  '<table class="pp">'+
  '<tr><td>Aquifer</td><td>'+p.cat+'</td></tr>'+
  '<tr><td>Inside Source<br>Protection Zone</td><td>'+

@@ -20,6 +20,9 @@ LAYER = "HydrogeologyUK_IoM_v5"
 # code, so geopandas reads it as "unknown"; it is EPSG:27700.
 BNG = 27700
 
+# mg/l as N -> mg/l as NO3: molar mass ratio 62.00 / 14.01.
+NO3_FACTOR = 4.427
+
 
 def aquifer_category(rock_unit: str, bgs_class: str) -> str:
     """Coarse comparison category from BGS lithostratigraphy + hydro class."""
@@ -80,13 +83,17 @@ def main():
         lon=("samplingPoint.longitude", "first"),
         name=("samplingPoint.prefLabel", "first"),
         point_type=("samplingPoint.samplingPointType", "first"),
-        nitrate_median_mg_L_as_N=("value", "median"),
+        nitrate_median_mg_L_as_NO3=("value", "median"),
         n_samples=("value", "size"),
         n_censored=("censored", "sum"),
         first_sample=("phenomenonTime", "min"),
         last_sample=("phenomenonTime", "max"),
     ).reset_index().rename(columns={"samplingPoint.notation": "well_id"})
-    wells["nitrate_median_mg_L_as_N"] = wells["nitrate_median_mg_L_as_N"].round(3)
+    # EA determinand 0117 is reported as N; the atlas publishes mg/l as NO3,
+    # the form the drinking-water standard is written in. Nitrogen -> nitrate is
+    # the molar mass ratio 62.00 / 14.01 = 4.427.
+    wells["nitrate_median_mg_L_as_NO3"] = (
+        wells["nitrate_median_mg_L_as_NO3"] * NO3_FACTOR).round(1)
     print(f"wells with {a.series} data: {len(wells)}")
 
     # BGS hydrogeology, clipped to the study bbox
@@ -115,7 +122,7 @@ def main():
     out = j.drop(columns="geometry").rename(columns={
         "ROCK_UNIT": "bgs_rock_unit", "CLASS": "bgs_class",
         "CHARACTER": "bgs_character"})
-    cols = ["well_id", "lat", "lon", "nitrate_median_mg_L_as_N",
+    cols = ["well_id", "lat", "lon", "nitrate_median_mg_L_as_NO3",
             "aquifer_category", "n_samples", "n_censored", "name", "point_type",
             "bgs_rock_unit", "bgs_class", "bgs_character",
             "first_sample", "last_sample"]

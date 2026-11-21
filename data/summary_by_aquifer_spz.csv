@@ -1,5 +1,5 @@
-aquifer_category,in_spz,n_wells,median_nitrate,q1,q3,pct_above_11.3
-Chalk,False,60,8.43,6.18,10.75,20.0
-Chalk,True,55,8.8,6.25,11.0,20.0
-Clay / low-permeability,False,57,0.1,0.1,0.83,0.0
-Clay / low-permeability,True,14,0.1,0.1,4.1,0.0
+aquifer_category,in_spz,n_wells,median_nitrate,q1,q3,pct_above_50
+Chalk,False,60,37.3,27.3,47.58,20.0
+Chalk,True,55,39.0,27.65,48.7,20.0
+Clay / low-permeability,False,57,0.4,0.4,3.7,0.0
+Clay / low-permeability,True,14,0.4,0.4,18.17,0.0

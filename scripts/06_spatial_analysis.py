@@ -30,6 +30,10 @@ WC_NAMES = {10: "Tree cover", 20: "Shrubland", 30: "Grassland", 40: "Cropland",
 FARMLAND_THRESHOLD = 75.0
 FARMLAND_RADIUS_M = 1000
 
+# Drinking-water limit, mg/l as NO3 (Water Supply (Water Quality) Regulations
+# 2016, Schedule 1, Table B).
+LIMIT_NO3 = 50.0
+
 # Categories carried into the statistical comparison (Greensand n=14 is excluded).
 COMPARE = ["Chalk", "Clay / low-permeability"]
 
@@ -121,7 +125,7 @@ def main():
     gw["farmland_class"] = np.where(
         gw["pct_farmland_1km"] >= a.threshold, "high", "low")
 
-    cols = ["well_id", "lat", "lon", "nitrate_median_mg_L_as_N", "aquifer_category",
+    cols = ["well_id", "lat", "lon", "nitrate_median_mg_L_as_NO3", "aquifer_category",
             "n_samples", "n_censored", "name", "point_type", "bgs_rock_unit",
             "bgs_class", "bgs_character", "first_sample", "last_sample",
             "in_spz", "spz_zone", "dist_to_spz_boundary_m", "dist_to_nearest_spz_m",
@@ -136,14 +140,14 @@ def main():
     stat = df[df.aquifer_category.isin(COMPARE)].copy()
 
     def summarise(frame, by):
-        g = frame.groupby(by)["nitrate_median_mg_L_as_N"]
+        g = frame.groupby(by)["nitrate_median_mg_L_as_NO3"]
         r = pd.DataFrame({
             "n_wells": g.size().astype(int),
             "median_nitrate": g.median().round(2),
             "q1": g.quantile(.25).round(2),
             "q3": g.quantile(.75).round(2),
-            "pct_above_11.3": (100 * frame.groupby(by)["nitrate_median_mg_L_as_N"]
-                               .apply(lambda s: (s > 11.3).mean())).round(1),
+            "pct_above_50": (100 * frame.groupby(by)["nitrate_median_mg_L_as_NO3"]
+                             .apply(lambda s: (s > LIMIT_NO3).mean())).round(1),
         }).reset_index()
         return r
 
@@ -171,7 +175,9 @@ def main():
         "farmland_median_pct_1km": float(df.pct_farmland_1km.median()),
         "statistical_categories": COMPARE,
         "excluded_from_stats": "Greensand (n=14) and minor categories",
-        "drinking_water_limit_mg_L_as_N": 11.3,
+        "drinking_water_limit_mg_L_as_NO3": LIMIT_NO3,
+        "drinking_water_limit_source":
+            "Water Supply (Water Quality) Regulations 2016, Schedule 1, Table B",
     }, indent=2))
 
     pd.set_option("display.width", 200)

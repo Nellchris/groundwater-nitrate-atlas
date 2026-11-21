@@ -5,10 +5,10 @@ import json
 import geopandas as gpd
 import pandas as pd
 
-# Nitrate as N (mg/l). 11.3 mg/l as N == the 50 mg/l as NO3 drinking-water limit.
-BREAKS = [(2, "#2c7bb6", "< 2"), (5, "#abd9e9", "2 - 5"),
-          (8, "#ffffbf", "5 - 8"), (11.3, "#fdae61", "8 - 11.3"),
-          (float("inf"), "#d7191c", "> 11.3 (above 50 mg/l NO3)")]
+# Nitrate as NO3 (mg/l); 50 mg/l is the drinking-water limit.
+BREAKS = [(8.9, "#2c7bb6", "< 8.9"), (22.1, "#abd9e9", "8.9 - 22.1"),
+          (35.4, "#ffffbf", "22.1 - 35.4"), (50, "#fdae61", "35.4 - 50"),
+          (float("inf"), "#d7191c", "> 50 (above the drinking-water limit)")]
 
 AQ_COLOURS = {
     "Chalk": "#dcd0e8",
@@ -44,10 +44,10 @@ def main():
 
     pts = [{
         "id": r.well_id, "lat": r.lat, "lon": r.lon,
-        "v": r.nitrate_median_mg_L_as_N, "n": int(r.n_samples),
+        "v": r.nitrate_median_mg_L_as_NO3, "n": int(r.n_samples),
         "nc": int(r.n_censored), "cat": r.aquifer_category,
         "ru": r.bgs_rock_unit if isinstance(r.bgs_rock_unit, str) else "-",
-        "nm": r.name, "c": colour(r.nitrate_median_mg_L_as_N),
+        "nm": r.name, "c": colour(r.nitrate_median_mg_L_as_NO3),
     } for r in wells.itertuples()]
 
     legend_nitrate = "".join(
@@ -99,7 +99,7 @@ const wellLayer = L.layerGroup(PTS.map(p => L.circleMarker([p.lat, p.lon], {{
   radius: 5, fillColor: p.c, color: '#222', weight: 1, fillOpacity: .95
 }}).bindPopup(
   `<b>${{p.id}}</b><br>${{p.nm}}<br><br>` +
-  `<b>${{p.v}} mg/l NO<sub>3</sub>-N</b> (median of ${{p.n}} samples)<br>` +
+  `<b>${{p.v}} mg/l NO<sub>3</sub></b> (median of ${{p.n}} samples)<br>` +
   (p.nc ? `${{p.nc}} of ${{p.n}} below reporting limit<br>` : '') +
   `<br>Category: <b>${{p.cat}}</b><br>BGS unit: ${{p.ru}}`
 ))).addTo(map);

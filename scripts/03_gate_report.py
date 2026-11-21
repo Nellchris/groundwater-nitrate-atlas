@@ -29,7 +29,8 @@ def main():
           f"{bb['south']}N .. {bb['north']}N")
     print(f"Window               : {meta['window']['years']} years ending "
           f"{meta['window']['end']}")
-    print(f"Determinand          : 0117 Nitrate as N (mg/l as N)")
+    print(f"Determinand          : 0117 Nitrate as N "
+          f"(converted to mg/l as NO3, x4.427)")
     print(f"Sampling point types : {meta['sampling_point_types']} "
           "(ambient groundwater; landfill/waste boreholes excluded)")
     print(f"Observations          : {len(d['n_samples']) and int(d['n_samples'].sum())} "
@@ -47,8 +48,8 @@ def main():
 
     print("-- WELLS PER AQUIFER CATEGORY " + "-" * 42)
     vc = d["aquifer_category"].value_counts()
-    med = d.groupby("aquifer_category")["nitrate_median_mg_L_as_N"].median()
-    print(f"  {'category':<30}{'wells':>7}{'median NO3-N':>14}   gate")
+    med = d.groupby("aquifer_category")["nitrate_median_mg_L_as_NO3"].median()
+    print(f"  {'category':<30}{'wells':>7}{'median NO3':>14}   gate")
     for cat, n in vc.items():
         gate = ""
         if cat in COMPARE:
