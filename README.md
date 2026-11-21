@@ -1,6 +1,8 @@
 # Groundwater Nitrate Atlas — Chalk vs Clay
 
 https://nellchris.github.io/groundwater-nitrate-atlas/
+
+## Intro
 This project investigates nitrate contamination in groundwater across part of southern England. Nitrate from agricultural fertilisers and livestock can seep through soil into underground water sources, posing a risk to drinking water. The study area spans Dorset, Wiltshire, Hampshire and parts of the surrounding counties — a region where permeable chalk aquifers sit alongside low-permeability clay formations, creating a natural contrast in how vulnerable groundwater is to surface pollution.
 
 ## Results
